@@ -1,7 +1,13 @@
 package com.inventory.inventorysystem.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -10,7 +16,7 @@ public class Role {
     private long id;
     @Column(nullable = false, unique = true)
     private String name;
-    public Role(){}
+
     public Role(String name) {
         this.name = name;
     }

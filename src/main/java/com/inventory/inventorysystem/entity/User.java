@@ -1,5 +1,6 @@
 package com.inventory.inventorysystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class User {
     @Column(nullable = false)
     private String password;
     @Column
-    private boolean active;
+    private Boolean active;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
@@ -36,5 +37,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @Builder.Default
+    @JsonIgnoreProperties("users")
     private Set<Role> roles = new HashSet<>();
 }

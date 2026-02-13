@@ -15,10 +15,10 @@ public class RoleSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createRoleIfNotExists("ADMIN");
-        createRoleIfNotExists("MANAGER");
-        createRoleIfNotExists("EMPLOYEE");
-        createRoleIfNotExists("CLIENT");
+        createRoleIfNotExists("ROLE_ADMIN");
+        createRoleIfNotExists("ROLE_MANAGER");
+        createRoleIfNotExists("ROLE_EMPLOYEE");
+        createRoleIfNotExists("ROLE_CLIENT");
     }
 
     private void createRoleIfNotExists(String roleName){
