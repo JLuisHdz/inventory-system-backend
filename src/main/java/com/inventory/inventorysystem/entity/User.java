@@ -26,7 +26,7 @@ public class User {
     @Column(nullable = false)
     private String password;
     @Column
-    private Boolean active;
+    private boolean active;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
