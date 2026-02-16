@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    public String test(){
-        return "OK";
+    public String test() {
+        return "Funciona";
     }
 }
