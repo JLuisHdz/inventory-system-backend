@@ -1,10 +1,15 @@
 package com.inventory.inventorysystem.controller;
 
+import com.inventory.inventorysystem.dto.auth.UserResponse;
 import com.inventory.inventorysystem.entity.User;
 import com.inventory.inventorysystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -17,12 +22,17 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<UserResponse> createUser(@RequestBody User user){
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.ok(userService.toResponse(createdUser));
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "Funciona";
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public List<UserResponse> getAllUsers() {
+        return userService.getAllUsers()
+                .stream()
+                .map(userService::toResponse)
+                .collect(Collectors.toList());
     }
 }
