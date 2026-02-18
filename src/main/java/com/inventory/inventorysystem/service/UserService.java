@@ -1,12 +1,11 @@
 package com.inventory.inventorysystem.service;
 
-import com.inventory.inventorysystem.dto.auth.UserResponse;
+import com.inventory.inventorysystem.dto.auth.user.UserResponse;
 import com.inventory.inventorysystem.entity.Role;
 import com.inventory.inventorysystem.entity.User;
 import com.inventory.inventorysystem.repository.RoleRepository;
 import com.inventory.inventorysystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
