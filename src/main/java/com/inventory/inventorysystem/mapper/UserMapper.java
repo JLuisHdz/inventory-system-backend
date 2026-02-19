@@ -1,6 +1,6 @@
 package com.inventory.inventorysystem.mapper;
 
-import com.inventory.inventorysystem.dto.auth.user.UserResponse;
+import com.inventory.inventorysystem.dto.user.UserResponse;
 import com.inventory.inventorysystem.entity.Role;
 import com.inventory.inventorysystem.entity.User;
 import org.springframework.stereotype.Component;

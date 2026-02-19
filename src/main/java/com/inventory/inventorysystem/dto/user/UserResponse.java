@@ -1,4 +1,4 @@
-package com.inventory.inventorysystem.dto.auth.user;
+package com.inventory.inventorysystem.dto.user;
 
 import java.time.LocalDateTime;
 import java.util.Set;

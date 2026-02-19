@@ -1,6 +1,6 @@
 package com.inventory.inventorysystem.controller;
 
-import com.inventory.inventorysystem.dto.auth.user.UserResponse;
+import com.inventory.inventorysystem.dto.user.UserResponse;
 import com.inventory.inventorysystem.entity.User;
 import com.inventory.inventorysystem.mapper.UserMapper;
 import com.inventory.inventorysystem.service.UserService;
