@@ -1,9 +1,11 @@
 package com.inventory.inventorysystem.controller;
 
+import com.inventory.inventorysystem.dto.product.ProductRequest;
 import com.inventory.inventorysystem.dto.product.ProductResponse;
 import com.inventory.inventorysystem.entity.Product;
 import com.inventory.inventorysystem.mapper.ProductMapper;
 import com.inventory.inventorysystem.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,8 +23,11 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
+        Product product = productMapper.toEntity(request);
+
         Product created = productService.createProduct(product);
+
         return ResponseEntity.ok(productMapper.toResponse(created));
     }
 
