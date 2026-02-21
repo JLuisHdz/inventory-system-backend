@@ -1,8 +1,11 @@
 package com.inventory.inventorysystem.service;
 
 import com.inventory.inventorysystem.entity.Product;
+import com.inventory.inventorysystem.exception.ResourceNotFoundException;
 import com.inventory.inventorysystem.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +27,18 @@ public class ProductService {
     }
 
     public  void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id" + id));
+
+        productRepository.delete(product);
+    }
+
+    public Page<Product> getProducts(String name, Pageable pageable) {
+
+        if (name != null && !name.isBlank()) {
+            return productRepository.findByNameContainingIgnoreCase(name, pageable);
+        }
+
+        return productRepository.findAll(pageable);
     }
 }
