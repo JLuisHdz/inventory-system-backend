@@ -1,5 +1,6 @@
 package com.inventory.inventorysystem.service;
 
+import com.inventory.inventorysystem.dto.product.ProductUpdateRequest;
 import com.inventory.inventorysystem.entity.Product;
 import com.inventory.inventorysystem.exception.ResourceNotFoundException;
 import com.inventory.inventorysystem.repository.ProductRepository;
@@ -40,5 +41,19 @@ public class ProductService {
         }
 
         return productRepository.findAll(pageable);
+    }
+
+    public Product updateProduct(Long id, ProductUpdateRequest request) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found with id " + id));
+
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setStock(request.stock());
+
+        return productRepository.save(product);
     }
 }

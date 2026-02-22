@@ -4,6 +4,7 @@ import com.inventory.inventorysystem.dto.common.ApiResoponse;
 import com.inventory.inventorysystem.dto.common.PageResponse;
 import com.inventory.inventorysystem.dto.product.ProductRequest;
 import com.inventory.inventorysystem.dto.product.ProductResponse;
+import com.inventory.inventorysystem.dto.product.ProductUpdateRequest;
 import com.inventory.inventorysystem.entity.Product;
 import com.inventory.inventorysystem.mapper.ProductMapper;
 import com.inventory.inventorysystem.service.ProductService;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,10 +50,24 @@ public class ProductController {
     public ResponseEntity<ApiResoponse<PageResponse<ProductResponse>>> getAllProducts(
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id,asc") String sort
     ) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        String[] sortParams = sort.split(",");
+
+        String sortField = sortParams[0];
+        Sort.Direction direction = Sort.Direction.ASC;
+
+        if (sortParams.length > 1 && sortParams[1].equalsIgnoreCase("desc")) {
+            direction = Sort.Direction.DESC;
+        }
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(direction, sortField)
+        );
 
         Page<Product> productsPage = productService.getProducts(name, pageable);
 
@@ -72,6 +88,26 @@ public class ProductController {
                         true,
                         "Products retrieved successfully",
                         pageResponse
+                )
+        );
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResoponse<ProductResponse>> updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductUpdateRequest request
+    ) {
+
+        Product updated = productService.updateProduct(id, request);
+
+        ProductResponse response = productMapper.toResponse(updated);
+
+        return ResponseEntity.ok(
+                new ApiResoponse<>(
+                        true,
+                        "Product updated successfully",
+                        response
                 )
         );
     }
