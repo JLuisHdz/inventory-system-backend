@@ -8,6 +8,10 @@ import com.inventory.inventorysystem.dto.product.ProductUpdateRequest;
 import com.inventory.inventorysystem.entity.Product;
 import com.inventory.inventorysystem.mapper.ProductMapper;
 import com.inventory.inventorysystem.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+@Tag(
+        name = "Products",
+        description = "Product management APIs"
+)
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -27,6 +34,15 @@ public class ProductController {
     private final ProductService productService;
     private final ProductMapper productMapper;
 
+    @Operation(
+            summary = "Create a new product",
+            description = "Creates a new product and returns the created product information"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product created successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data")
+    })
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
     public ResponseEntity<ApiResoponse<ProductResponse>> createProduct(@Valid @RequestBody ProductRequest request) {
@@ -47,6 +63,14 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','EMPLOYEE')")
     @GetMapping
+    @Operation(
+            summary = "Get products",
+            description = "Returns paginated, searchable and sortable list of products"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     public ResponseEntity<ApiResoponse<PageResponse<ProductResponse>>> getAllProducts(
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
@@ -92,6 +116,15 @@ public class ProductController {
         );
     }
 
+    @Operation(
+            summary = "Update a product",
+            description = "Updates an existing product by its ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResoponse<ProductResponse>> updateProduct(
@@ -112,6 +145,15 @@ public class ProductController {
         );
     }
 
+    @Operation(
+            summary = "Delete a product",
+            description = "Deletes a product by its ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {

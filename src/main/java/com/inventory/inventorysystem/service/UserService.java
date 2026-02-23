@@ -1,5 +1,6 @@
 package com.inventory.inventorysystem.service;
 
+import com.inventory.inventorysystem.dto.user.UserRequest;
 import com.inventory.inventorysystem.dto.user.UserResponse;
 import com.inventory.inventorysystem.entity.Role;
 import com.inventory.inventorysystem.entity.User;
@@ -21,7 +22,8 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User createUser(User user){
+    public User createUser(UserRequest request){
+        User user = new User();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreationDate(LocalDateTime.now());
         user.setActive(true);
