@@ -23,13 +23,18 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User createUser(UserRequest request){
+
         User user = new User();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        user.setName(request.name());
+        user.setUsername(request.username());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setCreationDate(LocalDateTime.now());
         user.setActive(true);
 
         Role userRole = roleRepository.findByName("ROLE_CLIENT")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
+
         user.setRoles(Set.of(userRole));
 
         return userRepository.save(user);
