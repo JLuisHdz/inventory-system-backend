@@ -1,6 +1,6 @@
 package com.inventory.inventorysystem.dto.common;
 
-public record ApiResoponse<T>(
+public record ApiResponse<T>(
         boolean success,
         String message,
         T data

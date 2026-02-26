@@ -24,6 +24,10 @@ public class UserService {
 
     public User createUser(UserRequest request){
 
+        if(userRepository.findByUsername(request.username()).isPresent()){
+            throw new RuntimeException("Username already exists");
+        }
+
         User user = new User();
 
         user.setName(request.name());

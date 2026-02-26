@@ -1,6 +1,6 @@
 package com.inventory.inventorysystem.exception;
 
-import com.inventory.inventorysystem.dto.common.ApiResoponse;
+import com.inventory.inventorysystem.dto.common.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,9 +24,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResoponse<String>> handleNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity<ApiResponse<String>> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiResoponse<>(
+                .body(new ApiResponse<>(
                         false,
                         ex.getMessage(),
                         null
@@ -34,12 +34,23 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResoponse<String>> handleGeneral(Exception ex) {
+    public ResponseEntity<ApiResponse<String>> handleGeneral(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResoponse<>(
+                .body(new ApiResponse<>(
                         false,
                         "Something went wrong",
                         null
                 ));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
+
+        return ResponseEntity.badRequest().body(
+                new ErrorResponse(
+                        false,
+                        ex.getMessage()
+                )
+        );
     }
 }

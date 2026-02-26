@@ -1,6 +1,6 @@
 package com.inventory.inventorysystem.controller;
 
-import com.inventory.inventorysystem.dto.common.ApiResoponse;
+import com.inventory.inventorysystem.dto.common.ApiResponse;
 import com.inventory.inventorysystem.dto.common.PageResponse;
 import com.inventory.inventorysystem.dto.product.ProductRequest;
 import com.inventory.inventorysystem.dto.product.ProductResponse;
@@ -9,7 +9,6 @@ import com.inventory.inventorysystem.entity.Product;
 import com.inventory.inventorysystem.mapper.ProductMapper;
 import com.inventory.inventorysystem.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -39,13 +38,13 @@ public class ProductController {
             description = "Creates a new product and returns the created product information"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product created successfully"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "400", description = "Invalid input data")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Product created successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
-    public ResponseEntity<ApiResoponse<ProductResponse>> createProduct(@Valid @RequestBody ProductRequest request) {
+    public ResponseEntity<ApiResponse<ProductResponse>> createProduct(@Valid @RequestBody ProductRequest request) {
 
         Product product = productMapper.toEntity(request);
         Product created = productService.createProduct(product);
@@ -54,7 +53,7 @@ public class ProductController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResoponse<>(
+                .body(new ApiResponse<>(
                         true,
                         "Product created successfully",
                         response
@@ -68,10 +67,10 @@ public class ProductController {
             description = "Returns paginated, searchable and sortable list of products"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
-    public ResponseEntity<ApiResoponse<PageResponse<ProductResponse>>> getAllProducts(
+    public ResponseEntity<ApiResponse<PageResponse<ProductResponse>>> getAllProducts(
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
@@ -108,7 +107,7 @@ public class ProductController {
                 );
 
         return ResponseEntity.ok(
-                new ApiResoponse<>(
+                new ApiResponse<>(
                         true,
                         "Products retrieved successfully",
                         pageResponse
@@ -121,13 +120,13 @@ public class ProductController {
             description = "Updates an existing product by its ID"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Product updated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Product not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResoponse<ProductResponse>> updateProduct(
+    public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody ProductUpdateRequest request
     ) {
@@ -137,7 +136,7 @@ public class ProductController {
         ProductResponse response = productMapper.toResponse(updated);
 
         return ResponseEntity.ok(
-                new ApiResoponse<>(
+                new ApiResponse<>(
                         true,
                         "Product updated successfully",
                         response
@@ -150,9 +149,9 @@ public class ProductController {
             description = "Deletes a product by its ID"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Product deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Product not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
