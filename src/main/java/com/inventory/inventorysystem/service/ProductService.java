@@ -1,5 +1,6 @@
 package com.inventory.inventorysystem.service;
 
+import com.inventory.inventorysystem.dto.common.InventoryStatsResponse;
 import com.inventory.inventorysystem.dto.product.ProductUpdateRequest;
 import com.inventory.inventorysystem.entity.Product;
 import com.inventory.inventorysystem.exception.ResourceNotFoundException;
@@ -55,5 +56,24 @@ public class ProductService {
         product.setStock(request.stock());
 
         return productRepository.save(product);
+    }
+
+    public InventoryStatsResponse getInventoryStats() {
+
+        long totalProducts = productRepository.count();
+
+        long lowStockProducts = productRepository.countByStockLessThan(5);
+
+        double totalValue = productRepository.findAll()
+                .stream()
+                .mapToDouble(p -> p.getPrice() * p.getStock())
+                .sum();
+
+        return new InventoryStatsResponse(
+                totalProducts,
+                lowStockProducts,
+                totalValue
+        );
+
     }
 }

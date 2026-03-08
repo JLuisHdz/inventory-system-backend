@@ -1,6 +1,7 @@
 package com.inventory.inventorysystem.controller;
 
 import com.inventory.inventorysystem.dto.common.ApiResponse;
+import com.inventory.inventorysystem.dto.common.InventoryStatsResponse;
 import com.inventory.inventorysystem.dto.common.PageResponse;
 import com.inventory.inventorysystem.dto.product.ProductRequest;
 import com.inventory.inventorysystem.dto.product.ProductResponse;
@@ -158,5 +159,21 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/stats")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    public ResponseEntity<ApiResponse<InventoryStatsResponse>> getStats() {
+
+        InventoryStatsResponse stats = productService.getInventoryStats();
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        "Inventory stats retrieved",
+                        stats
+                )
+        );
+
     }
 }
