@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ProductRequest(
+
         @NotBlank
         @Schema(example = "Laptop")
         String name,
@@ -22,5 +23,7 @@ public record ProductRequest(
         @NotNull
         @Schema(example = "10")
         Integer stock
+
+        private Long categoryId;
 ) {
 }
