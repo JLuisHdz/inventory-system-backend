@@ -22,8 +22,9 @@ public record ProductRequest(
         @Min(0)
         @NotNull
         @Schema(example = "10")
-        Integer stock
+        Integer stock,
 
-        private Long categoryId;
+        @NotNull
+        Long categoryId
 ) {
 }

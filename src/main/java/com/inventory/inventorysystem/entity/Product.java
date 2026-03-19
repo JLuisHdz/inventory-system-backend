@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 public class Product {
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(nullable = false)
     private String name;

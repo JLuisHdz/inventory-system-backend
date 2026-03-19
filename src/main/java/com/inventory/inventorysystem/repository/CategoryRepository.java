@@ -2,6 +2,7 @@ package com.inventory.inventorysystem.repository;
 
 import com.inventory.inventorysystem.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-public class CategoryRepository extends JpaRepository<Category, Long> {
+import org.springframework.stereotype.Repository;
+@Repository
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 }
