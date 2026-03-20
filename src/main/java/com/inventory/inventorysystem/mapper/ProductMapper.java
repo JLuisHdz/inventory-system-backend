@@ -1,5 +1,6 @@
 package com.inventory.inventorysystem.mapper;
 
+import com.inventory.inventorysystem.dto.category.CategoryResponse;
 import com.inventory.inventorysystem.dto.product.ProductRequest;
 import com.inventory.inventorysystem.dto.product.ProductResponse;
 import com.inventory.inventorysystem.entity.Category;
@@ -21,8 +22,14 @@ public class ProductMapper {
                 product.getDescription(),
                 product.getPrice(),
                 product.getStock(),
-                product.getCreationDate()
-        );
+                product.getCreationDate(),
+                product.getCategory() != null
+                        ? new CategoryResponse(
+                        product.getCategory().getId(),
+                        product.getCategory().getName()
+                )
+                        : null
+                );
     }
 
     public Product toEntity(ProductRequest request) {

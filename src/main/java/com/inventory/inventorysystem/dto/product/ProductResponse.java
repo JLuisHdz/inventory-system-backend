@@ -1,5 +1,7 @@
 package com.inventory.inventorysystem.dto.product;
 
+import com.inventory.inventorysystem.dto.category.CategoryResponse;
+
 import java.time.LocalDateTime;
 
 public record ProductResponse(
@@ -8,5 +10,7 @@ public record ProductResponse(
         String description,
         double price,
         int stock,
-        LocalDateTime creationDate
+        LocalDateTime creationDate,
+
+        CategoryResponse category
 ) {}
